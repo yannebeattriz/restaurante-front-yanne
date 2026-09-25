@@ -8,31 +8,28 @@ export default function Navbar(){
         <header className="w-full bg-white border-b shadow-sm">
             <nav className="max-w-7xl mx-auto px-8 py-4 flex items-center justify-between">
                 <Link href="/" 
-                className="flex items-center gap-2 text-2xl font-bold text-cyan-600">
+                className="flex items-center gap-2 text-2xl font-bold text-[#9D2922]">
                     Restaurante
                 </Link>
 
                 <div className="flex items-center gap-8">
 
-                    <Link href="/" className="text-gray-700 
-                    hover:text-cyan-600 transition">
-                        Inicio
-                    </Link>
+                 
 
                     <Link href="/cardapio" 
                     className="text-gray-700 
-                    hover:text-cyan-600 transition">
+                    hover:text-[#9D2922] transition">
                         Cardápio
                     </Link>
 
                     <Link href="/sobre" className="text-gray-700 
-                    hover:text-cyan-600 transition">
+                    hover:text-[#9D2922] transition">
                         Sobre nós
                     </Link>
 
                     <Link href="/pedidos"
                     className="text-gray-700 
-                    hover:text-cyan-600 transition"
+                    hover:text-[#9D2922] transition"
                     >
                         Fazer pedido
                     </Link>

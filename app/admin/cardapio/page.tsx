@@ -1,4 +1,3 @@
-
 "use client"
 
 import Image from "next/image"
@@ -14,7 +13,6 @@ interface Produto {
 }
 
 export default function CardapioAdmin() {
-
     const [produtos, setProdutos] = useState<Produto[]>([])
     const [carregando, setCarregando] = useState(true)
 
@@ -39,18 +37,16 @@ export default function CardapioAdmin() {
                 text: "Não foi possível carregar os produtos",
                 icon: "error",
                 confirmButtonText: "Ok",
-                confirmButtonColor: "#00bcd4",
-                background: "#111111",
-                color: "#ffffff"
+                confirmButtonColor: "#B80F0F",
+                background: "#FFF9ED",
+                color: "#4A250C"
             })
-
         } finally {
             setCarregando(false)
         }
     }
 
     async function excluirProduto(id: number) {
-
         const resultado = await Swal.fire({
             title: "Excluir produto?",
             text: "Essa opção não poderá ser desfeita.",
@@ -58,10 +54,10 @@ export default function CardapioAdmin() {
             showCancelButton: true,
             confirmButtonText: "Sim, excluir",
             cancelButtonText: "Cancelar",
-            confirmButtonColor: "#ff4fa3",
-            cancelButtonColor: "#333333",
-            background: "#111111",
-            color: "#ffffff"
+            confirmButtonColor: "#B80F0F",
+            cancelButtonColor: "#4A250C",
+            background: "#FFF9ED",
+            color: "#4A250C"
         })
 
         if (!resultado.isConfirmed) {
@@ -91,9 +87,9 @@ export default function CardapioAdmin() {
                 text: "O produto foi excluído com sucesso",
                 icon: "success",
                 confirmButtonText: "Ok",
-                confirmButtonColor: "#00bcd4",
-                background: "#111111",
-                color: "#ffffff"
+                confirmButtonColor: "#B80F0F",
+                background: "#FFF9ED",
+                color: "#4A250C"
             })
 
         } catch (error) {
@@ -104,9 +100,9 @@ export default function CardapioAdmin() {
                 text: "Não foi possível excluir o produto",
                 icon: "error",
                 confirmButtonText: "Ok",
-                confirmButtonColor: "#00bcd4",
-                background: "#111111",
-                color: "#ffffff"
+                confirmButtonColor: "#B80F0F",
+                background: "#FFF9ED",
+                color: "#4A250C"
             })
         }
     }
@@ -117,8 +113,8 @@ export default function CardapioAdmin() {
 
     if (carregando) {
         return (
-            <main className="min-h-screen bg-black p-8 text-white flex items-center justify-center">
-                <p className="text-cyan-400 text-lg font-semibold">
+            <main className="flex min-h-screen items-center justify-center bg-[#FFF7E4]">
+                <p className="text-lg font-semibold text-[#B80F0F]">
                     Carregando produtos...
                 </p>
             </main>
@@ -126,68 +122,73 @@ export default function CardapioAdmin() {
     }
 
     return (
-        <main className="min-h-screen bg-black p-8 text-white">
+        <main className="min-h-screen bg-[#FFF7E4] px-8 py-12 text-[#4A250C]">
 
-            <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-7xl">
 
-                <h1 className="mb-2 text-3xl font-bold text-cyan-400">
-                    Gerenciar Cardápio
-                </h1>
+                {/* Cabeçalho */}
+                <div className="mb-12">
 
-                <p className="mb-8 text-gray-400">
-                    Produtos cadastrados na BOTOÊ
-                </p>
+                    <h1 className="text-4xl font-bold text-[#4A250C]">
+                        Gerenciar Cardápio
+                    </h1>
+
+                    <p className="mt-2 text-lg text-[#8A6A50]">
+                        Produtos cadastrados na ChocoLate
+                    </p>
+
+                </div>
 
                 {produtos.length === 0 ? (
 
-                    <div className="rounded-xl border border-cyan-400/20 bg-[#111111] p-8 text-center shadow-lg">
-                        <p className="text-gray-400">
+                    <div className="py-20 text-center">
+                        <p className="text-lg text-[#8A6A50]">
                             Nenhum produto cadastrado
                         </p>
                     </div>
 
                 ) : (
 
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
                         {produtos.map((produto) => (
 
                             <div
                                 key={produto.id}
-                                className="overflow-hidden rounded-xl border border-cyan-400/20 bg-[#111111] shadow-lg shadow-cyan-400/5 transition duration-300 hover:border-cyan-400/50 hover:shadow-cyan-400/10"
+                                className="group overflow-hidden rounded-2xl border border-[#E5CFA8] bg-[#FFFDF7] transition duration-300 hover:-translate-y-1 hover:border-[#B80F0F] hover:shadow-xl"
                             >
 
+                                {/* Imagem */}
                                 {produto.imagem && (
-
-                                    <div className="relative h-48 w-full bg-[#0a0a0a]">
+                                    <div className="relative h-52 w-full overflow-hidden bg-[#F5E5C8]">
 
                                         <Image
                                             src={produto.imagem}
                                             alt={produto.descricao}
                                             fill
-                                            className="object-contain"
+                                            className="object-contain p-4 transition duration-300 group-hover:scale-105"
                                         />
 
                                     </div>
-
                                 )}
 
-                                <div className="p-5">
+                                {/* Informações */}
+                                <div className="p-6">
 
-                                    <h2 className="text-xl font-bold text-white">
-                                        {produto.descricao}
-                                    </h2>
-
-                                    <p className="mt-3 text-lg text-cyan-400">
+                                    <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-[#B80F0F]">
                                         {produto.categoria}
                                     </p>
 
-                                    <p className="mt-3 text-lg font-semibold text-pink-400">
+                                    <h2 className="text-xl font-bold text-[#4A250C]">
+                                        {produto.descricao}
+                                    </h2>
+
+                                    <p className="mt-4 text-2xl font-bold text-[#4A250C]">
                                         R$ {Number(produto.preco).toFixed(2)}
                                     </p>
 
                                     <button
-                                        className="mt-4 w-full rounded-lg bg-pink-500 px-4 py-2 font-semibold text-white transition hover:bg-pink-400 hover:shadow-lg hover:shadow-pink-500/20"
+                                        className="mt-6 w-full cursor-pointer rounded-lg bg-[#B80F0F] px-4 py-3 font-semibold text-white transition hover:bg-[#940909]"
                                         onClick={() =>
                                             excluirProduto(produto.id)
                                         }

@@ -1,319 +1,180 @@
-
 "use client"
 
+import Navbar from "@/components/Navbar"
 import Image from "next/image"
-
 import { useEffect, useState } from "react"
 
-import Swal from "sweetalert2"
-
 interface Produto {
-
-    id: number
-
-    descricao: string
-
-    categoria: string
-
-    preco: number
-
-    imagem: string
-
+  id: number
+  descricao: string
+  categoria: string
+  preco: string
+  imagem: string
 }
 
-export default function CardapioAdmin() {
+export default function CardapioPage() {
+  const [produtos, setProdutos] = useState<Produto[]>([])
+  const [loading, setLoading] = useState(true)
 
-    const [produtos, setProdutos] = useState<Produto[]>([])
+  async function mostrarProdutos() {
+    try {
+      const response = await fetch("http://localhost:3001/produtos")
 
-    const [carregando, setCarregando] = useState(true)
+      if (!response.ok) {
+        throw new Error("Erro ao buscar produtos")
+      }
 
-    async function carregarProdutos() {
-
-        try {
-
-            const response = await fetch(
-                "http://localhost:3001/produtos"
-            )
-
-            if (!response.ok) {
-
-                throw new Error("Erro ao buscar produtos")
-
-            }
-
-            const data = await response.json()
-
-            setProdutos(data)
-
-        } catch (error) {
-
-            console.error(error)
-
-            await Swal.fire({
-
-                title: "Erro",
-
-                text: "Não foi possível carregar os produtos",
-
-                icon: "error",
-
-                confirmButtonText: "Ok",
-
-                confirmButtonColor: "#00b8d4",
-
-                background: "#111111",
-
-                color: "#ffffff"
-
-            })
-
-        } finally {
-
-            setCarregando(false)
-
-        }
-
+      const data = await response.json()
+      setProdutos(data)
+    } catch (error) {
+      console.error("Erro:", error)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    async function excluirProduto(id: number) {
+  useEffect(() => {
+    mostrarProdutos()
+  }, [])
 
-        const resultado = await Swal.fire({
+  return (
+    <main className="min-h-screen bg-[#FFF7E4] text-[#542B0B]">
 
-            title: "Excluir produto?",
+      <Navbar />
 
-            text: "Essa opção não poderá ser desfeita.",
+      {/* CABEÇALHO */}
+      <section className="relative overflow-hidden bg-[#FFF7E4] px-6 pb-16 pt-14">
 
-            icon: "warning",
+        {/* Detalhes decorativos */}
+        <div className="absolute left-[-40px] top-20 h-24 w-24 rounded-full bg-[#A80906]/10" />
+        <div className="absolute right-[-30px] top-10 h-32 w-32 rounded-full bg-[#E8B84A]/20" />
 
-            showCancelButton: true,
+        <div className="relative mx-auto max-w-5xl text-center">
 
-            confirmButtonText: "Sim, excluir",
+          <Image
+            src="/listra-redondo.jpeg"
+            alt="Logo ChocoLate"
+            width={145}
+            height={145}
+            className="mx-auto mb-6 h-40 w-40 object-contain"
+          />
 
-            cancelButtonText: "Cancelar",
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#B51212]">
+            doces feitos com carinho
+          </p>
 
-            confirmButtonColor: "#ff4fa3",
+          <h1 className="mt-3 text-5xl font-bold tracking-tight text-[#542B0B] md:text-6xl">
+            Nosso Cardápio
+          </h1>
 
-            cancelButtonColor: "#333333",
+          <p className="mx-auto mt-5 max-w-lg text-base leading-7 text-[#79512F]">
+            Escolha seu favorito e deixe seu momento ainda mais doce.
+          </p>
 
-            background: "#111111",
+          <div className="mx-auto mt-8 h-1 w-16 rounded-full bg-[#B51212]" />
 
-            color: "#ffffff"
+        </div>
+      </section>
 
-        })
 
-        if (!resultado.isConfirmed) {
+      {/* PRODUTOS */}
+      <section className="mx-auto max-w-6xl px-6 pb-20">
 
-            return
+        {loading ? (
 
-        }
+          <div className="flex justify-center py-20">
+            <p className="text-[#542B0B]">
+              Carregando produtos...
+            </p>
+          </div>
 
-        try {
+        ) : produtos.length === 0 ? (
 
-            const response = await fetch(
+          <div className="py-20 text-center">
+            <p className="text-lg text-[#542B0B]">
+              Nenhum produto disponível no momento.
+            </p>
+          </div>
 
-                `http://localhost:3001/produtos/${id}`,
+        ) : (
 
-                {
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
 
-                    method: "DELETE"
+            {produtos.map((produto) => (
 
-                }
+              <article
+                key={produto.id}
+                className="group relative overflow-hidden rounded-[32px] bg-[#FFFDF7] shadow-[0_8px_30px_rgba(84,43,11,0.10)] transition duration-300 hover:-translate-y-2 hover:shadow-[0_15px_35px_rgba(84,43,11,0.16)]"
+              >
 
-            )
+                {/* IMAGEM */}
+                <div className="relative flex h-72 items-center justify-center overflow-hidden bg-[#FFEBC6]">
 
-            if (!response.ok) {
+                  {/* detalhe vermelho */}
+                  <div className="absolute right-[-30px] top-[-30px] h-24 w-24 rounded-full bg-[#B51212]/10" />
 
-                throw new Error("Erro ao excluir o produto")
+                  <img
+                    src={produto.imagem}
+                    alt={produto.descricao}
+                    className="relative z-10 h-full w-full object-contain p-7 transition duration-500 group-hover:scale-105"
+                  />
 
-            }
+                </div>
 
-            setProdutos((produtosAtuais) =>
 
-                produtosAtuais.filter(
+                {/* INFORMAÇÕES */}
+                <div className="px-7 pb-7 pt-6">
 
-                    (produto) => produto.id !== id
+                  <div className="flex items-center justify-between gap-4">
 
-                )
+                    <span className="rounded-full bg-[#A80906] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+                      {produto.categoria}
+                    </span>
 
-            )
+                    <span className="text-lg font-bold text-[#B51212]">
+                      R$ {Number(produto.preco).toFixed(2)}
+                    </span>
 
-            await Swal.fire({
+                  </div>
 
-                title: "Excluído",
+                  <h2 className="mt-5 text-2xl font-bold leading-tight text-[#542B0B]">
+                    {produto.descricao}
+                  </h2>
 
-                text: "O produto foi excluído com sucesso",
+                  <button
+                    className="mt-6 w-full rounded-xl bg-[#B51212] py-3.5 font-semibold text-white transition duration-300 hover:bg-[#8F0E0E] hover:shadow-lg"
+                  >
+                    Fazer pedido
+                  </button>
 
-                icon: "success",
+                </div>
 
-                confirmButtonText: "Ok",
+              </article>
 
-                confirmButtonColor: "#00b8d4",
+            ))}
 
-                background: "#111111",
+          </div>
 
-                color: "#ffffff"
+        )}
 
-            })
+      </section>
 
-        } catch (error) {
 
-            console.error(error)
+      {/* RODAPÉ */}
+      <footer className="bg-[#A80906] px-6 py-12 text-center">
 
-            await Swal.fire({
+        <p className="text-lg font-semibold text-[#FFF7E4]">
+          Feito com carinho pela ChocoLate
+        </p>
 
-                title: "Erro",
+        <div className="mx-auto my-4 h-px w-12 bg-[#E8B84A]" />
 
-                text: "Não foi possível excluir o produto",
+        <p className="text-sm text-[#FFEBC6]">
+          Uma mordida e você entende.
+        </p>
 
-                icon: "error",
+      </footer>
 
-                confirmButtonText: "Ok",
-
-                confirmButtonColor: "#00b8d4",
-
-                background: "#111111",
-
-                color: "#ffffff"
-
-            })
-
-        }
-
-    }
-
-    useEffect(() => {
-
-        carregarProdutos()
-
-    }, [])
-
-    if (carregando) {
-
-        return (
-
-            <main className="min-h-screen bg-black p-8">
-
-                <p className="text-cyan-400">
-
-                    Carregando produtos...
-
-                </p>
-
-            </main>
-
-        )
-
-    }
-
-    return (
-
-        <main className="min-h-screen bg-black p-8">
-
-            <div className="mx-auto max-w-6xl">
-
-                <h1 className="mb-6 text-3xl font-bold text-cyan-400">
-
-                    Gerenciar Cardápio - BOTOÊ
-
-                </h1>
-
-                {produtos.length === 0 ? (
-
-                    <div className="rounded-lg bg-[#111111] p-8 text-center shadow">
-
-                        <p className="text-gray-400">
-
-                            Nenhum produto cadastrado
-
-                        </p>
-
-                    </div>
-
-                ) : (
-
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-
-                        {produtos.map((produto) => (
-
-                            <div
-
-                                key={produto.id}
-
-                                className="overflow-hidden rounded-lg bg-[#111111] shadow-lg shadow-cyan-400/5 border border-cyan-400/20"
-
-                            >
-
-                                {produto.imagem && (
-
-                                    <div className="relative h-48 w-full bg-[#0a0a0a]">
-
-                                        <Image
-
-                                            src={produto.imagem}
-
-                                            alt={produto.descricao}
-
-                                            fill
-
-                                            className="object-contain"
-
-                                        />
-
-                                    </div>
-
-                                )}
-
-                                <div className="p-5">
-
-                                    <h2 className="text-xl font-bold text-white">
-
-                                        {produto.descricao}
-
-                                    </h2>
-
-                                    <p className="mt-3 text-lg text-cyan-400">
-
-                                        {produto.categoria}
-
-                                    </p>
-
-                                    <p className="mt-3 text-lg font-semibold text-pink-400">
-
-                                        R$ {Number(produto.preco).toFixed(2)}
-
-                                    </p>
-
-                                    <button
-
-                                        className="mt-4 w-full rounded-lg bg-pink-500 px-4 py-2 font-semibold text-white hover:bg-pink-400"
-
-                                        onClick={() =>
-
-                                            excluirProduto(produto.id)
-
-                                        }
-
-                                    >
-
-                                        Excluir
-
-                                    </button>
-
-                                </div>
-
-                            </div>
-
-                        ))}
-
-                    </div>
-
-                )}
-
-            </div>
-
-        </main>
-
-    )
-
+    </main>
+  )
 }
-

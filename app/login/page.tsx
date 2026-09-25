@@ -1,129 +1,99 @@
-
 "use client"
 
 import { useRouter } from "next/navigation"
-
 import { useState } from "react"
-
+import Image from "next/image"
 import Swal from "sweetalert2"
 
-export default function Login(){
-
+export default function Login() {
     const router = useRouter()
 
-    const [usuario,setUsuario] = useState("")
-
+    const [usuario, setUsuario] = useState("")
     const [senha, setSenha] = useState("")
 
-    function entrar(){
-
-        if(usuario === "admin" && senha === "123456"){
-
-            localStorage.setItem("admin_logado","true")
-
+    function entrar() {
+        if (usuario === "admin" && senha === "123456") {
+            localStorage.setItem("admin_logado", "true")
             router.push("/admin")
-
             return
-
         }
 
         Swal.fire({
-
-            title:"Login invalido",
-
-            text:"Usuario ou senha incorretos",
-
-            icon:"error",
-
-            confirmButtonText:"Tentar novamente",
-
-            confirmButtonColor:"#00b8d4",
-
-            background:"#111111",
-
-            color:"#ffffff"
-
+            title: "Login inválido",
+            text: "Usuário ou senha incorretos",
+            icon: "error",
+            confirmButtonText: "Tentar novamente",
+            confirmButtonColor: "#B51212",
+            background: "#542B0B",
+            color: "#FFF7E6"
         })
-
     }
 
-    return(
+    return (
+        <main className="min-h-screen bg-[#FFF7E4] px-8 py-10">
 
-        <main className="flex min-h-screen items-center justify-center bg-black">
+            <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-2xl flex-col items-center justify-center">
 
-            <div className="w-full max-w-md rounded-2xl bg-[#111111] p-8 shadow-lg border border-cyan-400/20">
+                {/* Mascote */}
+                <Image
+                    src="/mascote.jpeg"
+                    alt="Mascote ChocoLate"
+                    width={190}
+                    height={190}
+                    className="mb-5 object-contain"
+                />
 
-                <h1 className="mb-8 text-center font-bold text-cyan-400">
-
-                    Área Administrativa - BOTOÊ
-
+                {/* Título */}
+                <h1 className="text-center text-4xl font-bold text-[#542B0B]">
+                    Área Administrativa - ChocoLate
                 </h1>
 
-                <p className="mb-8 text-center text-gray-400">
-
+                <p className="mt-3 text-center text-[#79512F]">
                     Faça login para acessar o painel
-
                 </p>
 
-                <div>
+                {/* Formulário sem card */}
+                <div className="mt-10 w-full max-w-xl space-y-6">
 
-                    <label className="text-white">Usuario</label>
+                    <div>
+                        <label className="mb-2 block font-medium text-[#542B0B]">
+                            Usuário
+                        </label>
 
-                    <input type="text"
+                        <input
+                            type="text"
+                            value={usuario}
+                            onChange={(e) => setUsuario(e.target.value)}
+                            placeholder="Digite seu usuário"
+                            className="w-full rounded-lg border border-[#D9B98C] bg-[#FFFDF7] p-4 text-[#542B0B] placeholder-[#9B8064] outline-none focus:border-[#B51212] focus:ring-2 focus:ring-[#FFD36A]"
+                        />
+                    </div>
 
-                    value={usuario}
+                    <div>
+                        <label className="mb-2 block font-medium text-[#542B0B]">
+                            Senha
+                        </label>
 
-                    onChange={(e)=>setUsuario(e.target.value)}
+                        <input
+                            type="password"
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                            placeholder="Digite sua senha"
+                            className="w-full rounded-lg border border-[#D9B98C] bg-[#FFFDF7] p-4 text-[#542B0B] placeholder-[#9B8064] outline-none focus:border-[#B51212] focus:ring-2 focus:ring-[#FFD36A]"
+                        />
+                    </div>
 
-                    placeholder="Digite seu usuario"
-
-                    className="w-full rounded-lg border border-gray-700 bg-[#0a0a0a] p-3 text-white
-
-                    outline-none focus:ring-2 focus:ring-cyan-400"
-
-                    />
+                    <button
+                        onClick={entrar}
+                        className="w-full cursor-pointer rounded-lg bg-[#B51212] py-4 text-lg font-semibold text-white transition hover:bg-[#8F0E0E]"
+                    >
+                        Entrar
+                    </button>
 
                 </div>
-
-                <div>
-
-                    <label className="text-white">Senha</label>
-
-                    <input type="password"
-
-                    value={senha}
-
-                    onChange={(e)=>setSenha(e.target.value)}
-
-                    placeholder="Digite sua senha"
-
-                    className="w-full rounded-lg border border-gray-700 bg-[#0a0a0a] p-3 text-white
-
-                    outline-none focus:ring-2 focus:ring-cyan-400"
-
-                    />
-
-                </div>
-
-                <button
-
-                onClick={entrar}
-
-                className="w-full rounded-lg bg-cyan-400
-
-                py-3 mt-6 font-semibold text-black hover:bg-cyan-300 cursor-pointer"
-
-                >
-
-                    Entrar
-
-                </button>
 
             </div>
 
         </main>
-
     )
-
 }
-
