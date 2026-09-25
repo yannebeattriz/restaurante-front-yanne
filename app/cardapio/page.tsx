@@ -52,7 +52,7 @@ export default function CardapioPage() {
         <div className="relative mx-auto max-w-5xl text-center">
 
           <Image
-            src="/listra-redondo.jpeg"
+            src="/mascote.jpeg"
             alt="Logo ChocoLate"
             width={145}
             height={145}
